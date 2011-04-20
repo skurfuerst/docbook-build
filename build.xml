@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Needed:
+
+pear install channel://pear.php.net/Net_URL2-0.3.1
+ sudo pear install channel://pear.php.net/HTTP_Request2-2.0.0beta3
+
+-->
+<project name="TYPO3 DocBook Build System" default="help">
+
+	<target name="help" description="Help explaining how to use this build system.">
+		<echo>
+
+		Welcome to the TYPO3 DocBook Build system!
+	----------------------------------
+	You may use the following command format to perform a task:
+	      phing &lt;task&gt;
+
+	Flags and properties can be given to Phing like this
+	      phing -Dsomeflag
+	      phing -Dname=value
+
+	The available tasks can be listed with
+	      phing -l
+		</echo>
+	</target>
+
+	<property file="Build.properties" />
+
+	<import file="Buildfiles/Rendering.xml"/>
+	<import file="Buildfiles/ValidationTools.xml"/>
+
+</project>

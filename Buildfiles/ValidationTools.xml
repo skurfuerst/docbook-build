@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ValidationTools" default="help">
+
+	<target name="help">
+		<fail message="DO NOT CALL THIS FILE DIRECTLY; INSTEAD USE build.xml" />
+	</target>
+
+</project>

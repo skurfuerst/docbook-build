@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Rendering" default="help">
+
+	<target name="help">
+		<fail message="DO NOT CALL THIS FILE DIRECTLY; INSTEAD USE build.xml" />
+	</target>
+
+	<target name="render" description="render the documentation!" depends="render.checkPrerequisites">
+
+	</target>
+
+	<target name="render.checkPrerequisites">
+		<echo>Checking existence of docbook-xsl-ns (DocBook XSL Stylesheets)</echo>
+		<mkdir dir="${basedir}/Resources" />
+		<available file="${basedir}/Resources/${prerequisite.docbook-xsl-ns.directory}" property="available.docbook-xsl-ns" />
+		<if>
+			<not><isset property="available.docbook-xsl-ns" /></not>
+			<then>
+				<fail unless="prerequisite.docbook-xsl-ns.url" message="Download location for prerequisite.url.docbook-xsl-ns not set in Build.properties!" />
+				<echo>... DocBook XSL Stylesheets not found, downloading...</echo>
+				<httpget url="${prerequisite.docbook-xsl-ns.url}" dir="${basedir}/Resources" />
+				<untar file="${basedir}/Resources/${prerequisite.docbook-xsl-ns.tarFileName}" todir="${basedir}/Resources" />
+				<delete file="${basedir}/Resources/${prerequisite.docbook-xsl-ns.tarFileName}" />
+			</then>
+			<else>
+				<echo>... found!</echo>
+			</else>
+		</if>
+
+		<echo>Checking existence of xsltproc</echo>
+		<exec command="${prerequisite.xsltproc.path}xsltproc --version" returnProperty="xsltproc.returnCode" />
+		<condition property="xsltproc.available"><isfalse value="${xsltproc.returnCode}" /></condition>
+		<fail unless="xsltproc.available" message="xsltproc not found in $PATH. Make sure to set prerequisite.xsltproc.path to the correct directory (and make sure to add a trailing slash!)" />
+	</target>
+</project>
