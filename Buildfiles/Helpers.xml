@@ -4,4 +4,34 @@
 	<target name="help">
 		<fail message="DO NOT CALL THIS FILE DIRECTLY; INSTEAD USE build.xml" />
 	</target>
+
+	<target name="helpers.downloadAndUnzipIfNotExists">
+		<fail unless="title" message="you must set the human readable title which should be checked" />
+		<fail unless="directory" message="you must set the target directory which should be checked" />
+		<fail unless="url" message="Download location for ${title} not set!" />
+		<fail unless="zipFileName" message="Download location for ${title} not set!" />
+
+		<echo>Checking existence of ${title} at ${directory}</echo>
+		<available file="${directory}" property="available.download-directory" />
+		<if>
+			<not><isset property="available.download-directory" /></not>
+			<then>
+				<echo>... ${title} not found, downloading...</echo>
+
+				<mkdir dir="${directory.temporaryDirectory}" />
+
+				<httpget url="${url}" dir="${directory.temporaryDirectory}" />
+
+				<php function="dirname" returnProperty="baseDirectory">
+					<param value="${directory}" />
+				</php>
+
+				<unzip file="${directory.temporaryDirectory}/${zipFileName}" todir="${baseDirectory}" />
+				<delete file="${directory.temporaryDirectory}/${zipFileName}" />
+			</then>
+			<else>
+				<echo>... found!</echo>
+			</else>
+		</if>
+	</target>
 </project>

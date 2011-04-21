@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+	<rewriteSystem systemIdStartString="http://docbook.sourceforge.net/release/xsl/current/"
+		rewritePrefix="file://{docbook-xsl-ns.absoluteDirectory}/"/>
+
+	<rewriteURI
+		uriStartString="http://docbook.sourceforge.net/release/xsl/current/"
+		rewritePrefix="file://{docbook-xsl-ns.absoluteDirectory}/" />
+
+<!--	<nextCatalog catalog="file://{docbook-schema.absoluteDirectory}/catalog.xml" />-->
+</catalog>
