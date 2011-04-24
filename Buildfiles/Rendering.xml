@@ -5,14 +5,42 @@
 		<fail message="DO NOT CALL THIS FILE DIRECTLY; INSTEAD USE build.xml" />
 	</target>
 
-	<target name="render" description="render the documentation!" depends="render.checkPrerequisites, render.setupBuildDirectory">
+	<target name="render" description="render the documentation!">
+		<phingcall target="render.renderHtml" />
+		<phingcall target="render.renderPdf" />
+	</target>
+
+	<target name="render.renderHtml" depends="render.checkPrerequisites, render.setupBuildDirectory">
 		<echo>Rendering HTML</echo>
-
+		<php function="mt_rand" returnProperty="randomValue" />
+		<property name="temporaryOutputDirectory" value="${directory.temporaryDirectory}/output/${randomValue}/" />
 		<resolvepath propertyName="xml.catalog" file="${directory.temporaryDirectory}/catalog.xml"/>
-		<exec command="XML_CATALOG_FILES='catalog.xml  file://${xml.catalog}' XML_DEBUG_CATALOG=1 ${prerequisite.xsltproc.path}xsltproc --xinclude --stringparam base.dir ${directory.temporaryDirectory}/output/ ${directory.docBookAdjustments}/html.xsl ${docBookSources.inputFileAndDirectory}" />
 
+		<exec command="XML_CATALOG_FILES='catalog.xml  file://${xml.catalog}' XML_DEBUG_CATALOG=1 ${prerequisite.xsltproc.path}xsltproc --xinclude --stringparam base.dir ${temporaryOutputDirectory} ${directory.docBookAdjustments}/html.xsl ${docBookSources.inputFileAndDirectory}" />
+
+		<delete dir="${output.html}" />
+		<mkdir dir="${output.html}" />
+		<move file="${temporaryOutputDirectory}" tofile="${output.html}" />
+	</target>
+
+	<target name="render.renderPdf" depends="render.checkPrerequisites, render.setupBuildDirectory">
 		<echo>Rendering PDF</echo>
-		<exec command="${prerequisite.fop.command}" />
+		<php function="mt_rand" returnProperty="randomValue" />
+		<property name="temporaryOutputFile" value="${directory.temporaryDirectory}/output/fo_temporary_${randomValue}" />
+		<resolvepath propertyName="xml.catalog" file="${directory.temporaryDirectory}/catalog.xml"/>
+
+		<exec command="XML_CATALOG_FILES='catalog.xml  file://${xml.catalog}' XML_DEBUG_CATALOG=1 ${prerequisite.xsltproc.path}xsltproc --xinclude --output  ${temporaryOutputFile}.fo ${directory.docBookAdjustments}/fop.xsl ${docBookSources.inputFileAndDirectory}" />
+
+		<exec command="${prerequisite.fop.command} -fo ${temporaryOutputFile}.fo  ${temporaryOutputFile}.pdf" />
+
+		<delete file="${output.pdf}" />
+
+		<php function="dirname" returnProperty="baseDirectory">
+			<param value="${output.pdf}" />
+		</php>
+		<mkdir dir="${baseDirectory}" />
+		<move file="${temporaryOutputFile}.pdf" tofile="${output.pdf}" />
+		<delete file="${temporaryOutputFile}.fo" />
 	</target>
 
 	<target name="render.checkPrerequisites">
