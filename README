@@ -1,0 +1,52 @@
+This project is a build chain for DocBook documents, which should be used
+for TYPO3. The whole system is using Phing.
+
+Current Status
+==============
+* Downloads build dependencies (like FOP, XSL Stylesheets)
+* Can build rudimentary HTML and PDF versions of documentation
+
+TODO
+====
+
+* Decide on output structure
+** Multiple versions // Translations
+
+* Create convenience tools
+** SXW -> DocBook conversion (Fabien)
+** Validation of hierarchical IDs / Fixing of hierarchical IDs
+** Validation of DocBook against DocBook 5 Schema
+
+* Cross-Linking between documents
+** Using OLinks?
+** Or using xref, but always having to load ALL documentation into memory?
+** Or using a pre-processing step? (If we know all IDs are unique across *all* our documents, we could convert xrefs to foreign documents to olink by using preprocessing)
+
+* Make it possible to render multiple documents at once
+** Current idea: Have a "build.properties" file (or something like that) at the top level of each book, and by that we can identify that we are at the top level directory of a book.
+
+* Translation workflow of manuals
+** Current idea: Pootle and po4a (http://po4a.alioth.debian.org/)
+
+* User Comments
+** these should be bound to a certain XML ID, and appear on section-level
+** Should be loaded via AJAX into the page, similar to api.jquery.org -> makes the HTML output by the DocBook stylesheets a lot more simple.
+
+* Integration on typo3.org
+** Should all documentation be found on typo3.org, directly in the layout of the page? I guess this is not the optimal layout for viewing documentation, so I am not sure if this makes sense.
+** However, if this is wanted, we'd need t
+
+* in-place editing
+** would be only possible in the original language // on the "trunk" documentation, as bugfixes in translations would need to be done in pootle.
+** however, would still be cool :-)
+** -> should appear as review requests in Gerrit
+
+* Git Structure of the manuals
+** I'd propose that *each manual* has its own Git Repository.
+** Furthermore, *all languages* of this manual are also stored in this Git Repository as separate branch or Tags. Not sure yet, if we need branches for older releases; I guess Tags are enough there.
+** Example:
+*** master_en (English version)
+*** master_de (German version)
+*** 4.5_en (4.5.X branch, in English)
+*** 4.5_de (4.5.X branch, in German)
+** People should only be allowed to commit into the _en branches; and all translations need to be updated automatically using Pootle.
