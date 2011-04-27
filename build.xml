@@ -3,7 +3,7 @@
 Needed:
 
 pear install channel://pear.php.net/Net_URL2-0.3.1
- sudo pear install channel://pear.php.net/HTTP_Request2-2.0.0beta3
+pear install channel://pear.php.net/HTTP_Request2-2.0.0beta3
 ZIP package from http://www.php.net/manual/de/zip.installation.php
 -->
 <project name="TYPO3 DocBook Build System" default="help">

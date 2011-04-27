@@ -17,6 +17,7 @@
 		<resolvepath propertyName="xml.catalog" file="${directory.temporaryDirectory}/catalog.xml"/>
 
 		<exec command="XML_CATALOG_FILES='catalog.xml  file://${xml.catalog}' XML_DEBUG_CATALOG=1 ${prerequisite.xsltproc.path}xsltproc --xinclude --stringparam base.dir ${temporaryOutputDirectory} ${directory.docBookAdjustments}/html.xsl ${docBookSources.inputFileAndDirectory}" />
+		<copy file="${directory.docBookAdjustments}/TheGuide.css" todir="${temporaryOutputDirectory}" />
 
 		<delete dir="${output.html}" />
 		<mkdir dir="${output.html}" />
