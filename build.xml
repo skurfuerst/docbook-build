@@ -9,12 +9,12 @@ ZIP package from http://www.php.net/manual/de/zip.installation.php
 <project name="TYPO3 DocBook Build System" default="help">
 
 	<target name="help" description="Help explaining how to use this build system.">
-		<echo>
+		<echo><![CDATA[
 
 		Welcome to the TYPO3 DocBook Build system!
 	----------------------------------
 	You may use the following command format to perform a task:
-	      phing &lt;task&gt;
+	      phing <tas>
 
 	Flags and properties can be given to Phing like this
 	      phing -Dsomeflag
@@ -22,7 +22,37 @@ ZIP package from http://www.php.net/manual/de/zip.installation.php
 
 	The available tasks can be listed with
 	      phing -l
-		</echo>
+
+	Rendering
+	----------------------------------
+
+	* render *
+
+	Start HTML and PDF rendering.
+
+	Tools
+	----------------------------------
+	Here are some cleanup tools, which can be used to fix messy
+	docbook codes.
+
+	* convert-code-to-programlisting *
+
+	Converts <para><code>...</code></para> elements
+	to <programlisting>...</programisting>.
+
+	After this, you should run the "connect-nested-programlistings" target.
+
+	* connect-nested-programlistings *
+
+	Converts
+		<programlisting>foo</programlisting>
+		<programlisting>bar</programlisting>
+	to
+		<programlisting>foo
+		bar</programlisting>
+
+	effectively merging multiple programlistings together.
+		]]></echo>
 	</target>
 
 	<property file="Build.properties" />

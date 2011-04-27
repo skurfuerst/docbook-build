@@ -5,4 +5,25 @@
 		<fail message="DO NOT CALL THIS FILE DIRECTLY; INSTEAD USE build.xml" />
 	</target>
 
+	<target name="convert-code-to-programlisting" description="convert &lt;para>&lt;code>...&lt;/code>&lt;/para> to &lt;programlisting>...&lt;/programlisting>">
+		<reflexive>
+			<fileset dir="${application.startdir}">
+				<include pattern="**.xml" />
+			</fileset>
+			<filterchain>
+				<xsltfilter style="${directory.docBookAdjustments}/code-to-programlisting.xsl" />
+			</filterchain>
+		</reflexive>
+	</target>
+
+	<target name="connect-nested-programlistings" description="convert &lt;programlisting>...&lt;/programlisting>&lt;programlisting>...&lt;/programlisting> to &lt;programlisting>...&lt;/programlisting> (merging the programlisting contents)">
+		<reflexive>
+			<fileset dir="${application.startdir}">
+				<include pattern="**.xml" />
+			</fileset>
+			<filterchain>
+				<xsltfilter style="${directory.docBookAdjustments}/merge-programlistings.xsl" />
+			</filterchain>
+		</reflexive>
+	</target>
 </project>
